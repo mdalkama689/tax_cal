@@ -1,9 +1,29 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import TaxCalculator from './components/TaxCalculator';
+import MobileShare from './components/share/MobileShare';
+import TabShare from './components/share/TabShare';
 
 function App() {
+    const [deviceType, setDeviceType] = useState<"big" | "small">("big");
+
+
+  useEffect(() => {
+    const handleResize = () => {
+        setDeviceType(window.innerWidth < 1024 ? "small" : "big");
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-900 text-white">
+      {deviceType === "small" ? <MobileShare /> : <TabShare />}
       <header className="bg-gray-800 py-4 shadow-lg">
         <div className="container mx-auto px-4 flex items-center">
           <div className="flex items-center">
